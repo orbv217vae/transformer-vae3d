@@ -1,0 +1,43 @@
+# Model artifacts, including symlinks to externally stored weights.
+weights
+checkpoints
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.partial
+# Images, latent arrays, results, private manifests.
+data/
+outputs/
+private/
+*.nii
+*.nii.gz
+*.dcm
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.csv
+*.jsonl
+# Credentials and local configuration.
+.env
+.env.*
+*.pem
+*.key
+*.log
+# Generated Python/build/editor files.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.DS_Store
+.idea/
+.vscode/
+
+.local_validation/

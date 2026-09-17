@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transformer-vae3d"
+version = "0.1.0"
+description = "Inference for a high-compression volumetric Transformer VAE"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.5,<3", "numpy>=1.26,<3", "safetensors>=0.4,<1"]
+
+[project.optional-dependencies]
+nifti = ["antspyx>=0.5,<0.7", "scipy>=1.11,<2"]
+test = ["pytest>=8,<10", "antspyx>=0.5,<0.7", "scipy>=1.11,<2"]
+
+[project.scripts]
+vae3d-reconstruct = "vae3d.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["vae3d*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
