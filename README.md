@@ -16,7 +16,7 @@ The tensor API requires only PyTorch, NumPy, and safetensors. The NIfTI command 
 
 ## Model files
 
-Download the model weight bundle from [Hugging Face: orbv217vae/transformer-vae3d-ct](https://huggingface.co/orbv217vae/transformer-vae3d-ct). The model repository is currently private and requires access. Keep the downloaded bundle in your Hugging Face cache and supply its absolute path to the inference commands. It contains:
+Download the model weight bundle from [Hugging Face: orbv217vae/transformer-vae3d-ct](https://huggingface.co/orbv217vae/transformer-vae3d-ct). Keep the downloaded bundle in your Hugging Face cache and supply its absolute path to the inference commands. It contains:
 
 - `model.safetensors`: float32 model tensors only; no optimizer, discriminator, or training state.
 - `config.json`: architecture fields needed to construct the model.
