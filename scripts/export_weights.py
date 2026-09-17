@@ -62,10 +62,9 @@ def main():
                 raise ValueError(f'Export tensor mismatch: {k}')
     partial.replace(target)
     (args.output / 'config.json').write_text(json.dumps(asdict(cfg), indent=2) + '\n')
-    info = {'variant': 'CT-adapted', 'source_step': payload['step'], 'weight_selection': 'model (non-EMA)',
-            'format': 'safetensors', 'dtype': 'float32', 'parameters': parameter_count,
+    info = {'format': 'safetensors', 'dtype': 'float32', 'parameters': parameter_count,
             'tensor_count': len(sd), 'size_bytes': target.stat().st_size,
-            'sha256': sha256(target), 'source_checkpoint_bytes': args.source.stat().st_size,
+            'sha256': sha256(target),
             'all_tensors_equal_to_source': True,
             'contains_optimizer_or_discriminator': False}
     (args.output / 'weights_info.json').write_text(json.dumps(info, indent=2) + '\n')

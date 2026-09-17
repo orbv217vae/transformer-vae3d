@@ -2,7 +2,7 @@
 
 Inference code for **A High-Compression Transformer VAE for Efficient 3D Medical Image Generation**.
 
-The model uses equal 8× downsampling along each spatial axis and 16 Gaussian latent channels. It has 525,766,400 parameters. The release package prepared here contains the **CT-adapted step-4000, non-EMA** weights. This is a different checkpoint from the brain MRI step-8000 EMA model discussed in the paper. Training data are not distributed.
+The model uses equal 8× downsampling along each spatial axis and 16 Gaussian latent channels. It has 525,766,400 parameters. This repository provides the standalone inference implementation for the released model. Training data are not distributed.
 
 ## Installation
 
@@ -16,20 +16,20 @@ The tensor API requires only PyTorch, NumPy, and safetensors. The NIfTI command 
 
 ## Model files
 
-Download the **CT-adapted step-4000 (non-EMA)** weight bundle from [Hugging Face: orbv217vae/transformer-vae3d-ct](https://huggingface.co/orbv217vae/transformer-vae3d-ct). The model repository is currently private and requires access. Keep the downloaded bundle in your Hugging Face cache and supply its absolute path to the inference commands. It contains:
+Download the model weight bundle from [Hugging Face: orbv217vae/transformer-vae3d-ct](https://huggingface.co/orbv217vae/transformer-vae3d-ct). The model repository is currently private and requires access. Keep the downloaded bundle in your Hugging Face cache and supply its absolute path to the inference commands. It contains:
 
 - `model.safetensors`: float32 model tensors only; no optimizer, discriminator, or training state.
 - `config.json`: architecture fields needed to construct the model.
-- `weights_info.json`: model size, checkpoint variant, SHA-256, and export verification.
+- `weights_info.json`: model size, SHA-256, and export verification.
 
-The same architecture configuration is included in `configs/ct_step4000.json`. Model weights are hosted separately on Hugging Face; they are not included in this Git repository. You can also pass a `.path` text file to `--weights`; its single line points to a separately stored safetensors file. Relative paths are resolved from the locator file directory. Local weight locators remain ignored by Git.
+The same architecture configuration is included in `configs/config.json`. Model weights are hosted separately on Hugging Face; they are not included in this Git repository. You can also pass a `.path` text file to `--weights`; its single line points to a separately stored safetensors file. Relative paths are resolved from the locator file directory. Local weight locators remain ignored by Git.
 
 ## Reconstruct a NIfTI volume
 
 ```bash
 python -m vae3d \
-  --weights weights/ct-step4000/model.safetensors \
-  --config configs/ct_step4000.json \
+  --weights /path/to/hf/snapshot/model.safetensors \
+  --config configs/config.json \
   --input input.nii.gz \
   --output outputs/reconstruction.nii.gz \
   --modality ct --device cuda:0 --precision bf16
@@ -49,8 +49,8 @@ The output is on the **preprocessed 1 mm grid**, retaining its origin, spacing, 
 import torch
 from vae3d import load_model, VAEInference
 
-model = load_model('weights/ct-step4000/model.safetensors',
-                   'configs/ct_step4000.json', device='cuda:0')
+model = load_model('/path/to/hf/snapshot/model.safetensors',
+                   'configs/config.json', device='cuda:0')
 runner = VAEInference(model, precision='bf16')
 image01 = torch.rand(1, 1, 128, 128, 128, device='cuda:0')
 z, geometry = runner.encode(image01)  # (1, 16, 16, 16, 16)
@@ -70,18 +70,7 @@ python -m pip install -e '.[test]'
 python -m pytest -q
 ```
 
-Tests use synthetic inputs only and cover geometry, padding, output alignment, safe loading, and latent contracts. The prepared CT weight bundle is also compared tensor by tensor with its source checkpoint; a separate release audit records full-model equivalence against the original inference implementation.
-
-## Exporting your own trusted checkpoint
-
-```bash
-python scripts/export_weights.py \
-  --source training_checkpoint.pt \
-  --expected-step 4000 \
-  --output weights/ct-step4000
-```
-
-This exporter selects the regular `model` state, not EMA. It preserves float32 values exactly and refuses to overwrite an existing export. The original training checkpoint remains unchanged. The exported architecture must match this non-hierarchical f8/C16 model.
+Tests use synthetic inputs only and cover geometry, padding, output alignment, safe loading, and latent contracts. The released weight bundle is also compared tensor by tensor with its source checkpoint; a separate release audit records full-model equivalence against the original inference implementation.
 
 ## Release status
 

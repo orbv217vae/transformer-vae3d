@@ -1,8 +1,7 @@
 # Release validation
 
-The prepared CT-adapted step-4000 (non-EMA) bundle contains 168 float32 tensors with 525,766,400 model parameters. All exported tensors were checked for exact equality with the source checkpoint. No optimizer or discriminator state is stored in the safetensors file.
+The released model bundle contains 168 float32 tensors with 525,766,400 model parameters. All exported tensors were checked for exact equality with the source checkpoint. No optimizer or discriminator state is stored in the safetensors file.
 
-- Source training checkpoint: 6,488,345,541 bytes.
 - Exported model: 2,103,083,096 bytes (approximately 2.10 GB).
 - Weight SHA-256: `99e028cebaf328624191089d662fdf0af930943c1f18215f5be4c90c60cbd60e`.
 
