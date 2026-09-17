@@ -16,13 +16,13 @@ The tensor API requires only PyTorch, NumPy, and safetensors. The NIfTI command 
 
 ## Model files
 
-Place the separately distributed weight bundle under `weights/ct-step4000/`, or supply its absolute path. This directory is intentionally ignored by Git. It contains:
+Download the **CT-adapted step-4000 (non-EMA)** weight bundle from [Hugging Face: orbv217vae/transformer-vae3d-ct](https://huggingface.co/orbv217vae/transformer-vae3d-ct). The model repository is currently private and requires access. Keep the downloaded bundle in your Hugging Face cache and supply its absolute path to the inference commands. It contains:
 
 - `model.safetensors`: float32 model tensors only; no optimizer, discriminator, or training state.
 - `config.json`: architecture fields needed to construct the model.
 - `weights_info.json`: model size, checkpoint variant, SHA-256, and export verification.
 
-The same architecture configuration is included in `configs/ct_step4000.json`. GitHub code uploads do not include model weights; distribute the bundle separately. A public download location has not yet been configured. You can also pass a `.path` text file to `--weights`; its single line points to a separately stored safetensors file. Relative paths are resolved from the locator file directory. Local weight locators remain ignored by Git.
+The same architecture configuration is included in `configs/ct_step4000.json`. Model weights are hosted separately on Hugging Face; they are not included in this Git repository. You can also pass a `.path` text file to `--weights`; its single line points to a separately stored safetensors file. Relative paths are resolved from the locator file directory. Local weight locators remain ignored by Git.
 
 ## Reconstruct a NIfTI volume
 
